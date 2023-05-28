@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "nacion1846",
+    "database": "Erp",
+    "host": "200.73.134.44",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
