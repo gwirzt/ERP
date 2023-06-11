@@ -256,17 +256,7 @@ const createToken = (Usuario) => {
 
 
 
-const generateTokenEterno = (usuarioId) => {
-    const payload = {
-        usuarioId: usuarioId
-    };
 
-    const token = jwt.sign(payload, 'Dime con quien andas y te dire quien eres');
-
-    return token;
-};
-
-module.exports = { generateTokenEterno };
 
 
 

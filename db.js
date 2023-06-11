@@ -29,8 +29,8 @@ const VehiculosModel = require('./models/camiones/Vehiculos');
 const EquiposModel = require('./models/camiones/Equipos');
 
 // Punto de Venta
-const PuntoVentaClientesModel = require('./models/puntodeventa/PuntoVentaClientes');
-const PuntoVentaClientesPagosModel = require('./models/puntodeventa/PuntoVentaClientesPagos');
+const PuntoVentaClientesModel = require('./models/puntodeventa/PuntoVentasClientes');
+const PuntoVentaClientesPagosModel = require('./models/puntodeventa/PuntoVentasClientesPagos');
 
 
 
@@ -62,8 +62,8 @@ const TiposVehiculos = TiposVehiculosModel(sequelize, Sequelize);
 const Vehiculos = VehiculosModel(sequelize, Sequelize);
 const Equipos = EquiposModel(sequelize, Sequelize);
 
-const PuntoVentaClientes = PuntoVentaClientesModel(sequelize, Sequelize);
-const PuntoVentaClientesPagos = PuntoVentaClientesPagosModel(sequelize, Sequelize);
+const PuntoVentasCliente = PuntoVentaClientesModel(sequelize, Sequelize);
+const PuntoVentasClientePago = PuntoVentaClientesPagosModel(sequelize, Sequelize);
 
 
 
@@ -76,7 +76,7 @@ module.exports = {
     Usuario,
     Empresa, UnidadNegocio, Localidad, Provincia, CentroCosto, EmpresaCentroCosto,
     UnidadNegocioCentroCosto, Cliente, Provedor, CondicionPago, CondicionIva, Choferes,
-    TiposVehiculos, Vehiculos, Equipos, ComprobantesCompras, TipoComprobantes, PuntoVentaClientes, PuntoVentaClientesPagos
+    TiposVehiculos, Vehiculos, Equipos, ComprobantesCompras, TipoComprobantes, PuntoVentasCliente, PuntoVentasClientePago
 }
 
 
