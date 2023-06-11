@@ -249,7 +249,7 @@ const createToken = (Usuario) => {
         expiredAt: moment().add(15, 'minutes').unix()
     };
 
-    return jwt.encode(payload, 'Frase Secreta');
+    return jwt.encode(payload, 'Dime con quien andas y te dire quien eres');
 
 };
 
@@ -261,7 +261,7 @@ const generateTokenEterno = (usuarioId) => {
         usuarioId: usuarioId
     };
 
-    const token = jwt.sign(payload, 'Frase Secreta');
+    const token = jwt.sign(payload, 'Dime con quien andas y te dire quien eres');
 
     return token;
 };

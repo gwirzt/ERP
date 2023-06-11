@@ -10,7 +10,7 @@ const checkToken = (req, res, next) => {
     const userToken = req.headers['user-token'];
     let payload = {};
     try {
-        payload = jwt.decode(userToken, 'Frase Secreta');
+        payload = jwt.decode(userToken, 'Dime con quien andas y te dire quien eres');
     } catch (err) {
         return res.status(401).json({ error: 'No autorizado, token incorrecto' });
     };

@@ -28,6 +28,10 @@ const TiposVehiculosModel = require('./models/camiones/TiposVehiculos');
 const VehiculosModel = require('./models/camiones/Vehiculos');
 const EquiposModel = require('./models/camiones/Equipos');
 
+// Punto de Venta
+const PuntoVentaClientesModel = require('./models/puntodeventa/PuntoVentaClientes');
+const PuntoVentaClientesPagosModel = require('./models/puntodeventa/PuntoVentaClientesPagos');
+
 
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
@@ -58,6 +62,11 @@ const TiposVehiculos = TiposVehiculosModel(sequelize, Sequelize);
 const Vehiculos = VehiculosModel(sequelize, Sequelize);
 const Equipos = EquiposModel(sequelize, Sequelize);
 
+const PuntoVentaClientes = PuntoVentaClientesModel(sequelize, Sequelize);
+const PuntoVentaClientesPagos = PuntoVentaClientesPagosModel(sequelize, Sequelize);
+
+
+
 sequelize.sync({ force: false })
     .then(() => {
         console.log('Tablas sincronizadas');
@@ -67,7 +76,7 @@ module.exports = {
     Usuario,
     Empresa, UnidadNegocio, Localidad, Provincia, CentroCosto, EmpresaCentroCosto,
     UnidadNegocioCentroCosto, Cliente, Provedor, CondicionPago, CondicionIva, Choferes,
-    TiposVehiculos, Vehiculos, Equipos, ComprobantesCompras, TipoComprobantes
+    TiposVehiculos, Vehiculos, Equipos, ComprobantesCompras, TipoComprobantes, PuntoVentaClientes, PuntoVentaClientesPagos
 }
 
 
