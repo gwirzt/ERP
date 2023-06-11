@@ -117,7 +117,7 @@ router.post('/alta', [
  *             type: object
  *             properties:
  *               id_cliente:
- *                 type: string
+ *                 type: integer
  *               importe_pesos:
  *                 type: number
  *               importe_dolares:
@@ -239,7 +239,95 @@ router.post('/pagoperiodo', [
     }
 });
 
+/**
+ * @swagger
+ * /api/puntoventasclientes/consultarPago:
+ *   post:
+ *     summary: Consultar pagos de un cliente
+ *     tags: 
+ *      - Punto de Venta
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               token:
+ *                 type: string
+ *                 description: Token del cliente
+ *             example:
+ *               token: "..."
+ *     responses:
+ *       201:
+ *         description: Cliente consultado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   description: Mensaje de éxito
+ *                 pagos:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/PuntoVentasClientePago'
+ *       422:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error al consultar el token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                   description: Mensaje de error
+ */
 
+router.post('/consultarPago', [
+    check('token').notEmpty().withMessage('Debe enviar un token')
+], async (req, res) => {
+
+    // Verificar si hay errores de validación
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+    try {
+        const cliente = await PuntoVentasCliente.findAll({
+            where: {
+                token: req.body.token
+            }
+        });
+        if (cliente) {
+
+            const pagos = await PuntoVentasClientePago.findAll({
+                where: {
+                    id_cliente: cliente[0].id
+                }
+            });
+            res.status(201).json({ mensaje: 'Cliente consultado exitosamente', pagos });
+        }
+
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensaje: 'Ocurrió un error al consultar el token ' });
+    }
+
+});
 
 
 
