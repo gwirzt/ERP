@@ -9,6 +9,7 @@ module.exports = function (sequelize, types) {
         id_condicionIva: { type: types.INTEGER, allowNull: false },
         id_condicionPago: { type: types.INTEGER, allowNull: false },
         activo: { type: types.BOOLEAN, allowNull: false, defaultValue: true },
-        id_localidad: { type: types.INTEGER, allowNull: false }
+        id_localidad: { type: types.INTEGER, allowNull: false },
+        token: { type: types.STRING(2048), allowNull: false },
     });
 }
