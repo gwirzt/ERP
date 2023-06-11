@@ -78,7 +78,7 @@ router.post('/', async (req, res) => {
  * /api/empresas/{id}:
  *  put:
  *      summary: Actualiza una empresa existente
- *      tags: [Empresas]
+ *      tags: [Empresa]
  *      security:
  *          - bearerAuth: []
  *      parameters:
@@ -117,7 +117,7 @@ router.put('/:empresaId', async (req, res) => {
  * /api/empresas:
  *  get:
  *      summary: Retorna todas las empresas
- *      tags: [Empresas]
+ *      tags: [Empresa]
  *      security:
  *          - bearerAuth: []
  *      parameters:

@@ -7,6 +7,60 @@ const jwt = require('jwt-simple');
 
 
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *     Usuarios:
+ *      type: object
+ *      properties:
+ *          id:
+ *              type: integer       
+ *              readOnly: true
+ *          username:
+ *              type: string
+ *          email:
+ *              type: string
+ *          password:
+ *              type: string
+ *      required:
+ *          - username
+ *          - email
+ *          - password
+ * 
+ */
+
+/**
+ * @swagger
+ * /api/register:
+ *   post:
+ *     summary: Registrar un nuevo usuario
+ *     tags: [Usuario]
+ *     description: Registrar un nuevo usuario con su correo electrónico, contraseña y nombre de usuario.
+ *     parameters:
+ *       - name: email
+ *         in: formData
+ *         description: Correo electrónico del usuario.
+ *         required: true
+ *         type: string
+ *       - name: password
+ *         in: formData
+ *         description: Contraseña del usuario (mínimo 5 caracteres).
+ *         required: true
+ *         type: string
+ *       - name: username
+ *         in: formData
+ *         description: Nombre de usuario.
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Usuario registrado correctamente.
+ *       422:
+ *         description: Error de validación. Devuelve una lista de errores de validación.
+ *       500:
+ *         description: Error en el servidor.
+ */
 router.post('/register', [
     check('email', 'Debe ser un email correcto').isEmail(),
     check('password', 'Minimo 5 caracteres').isLength({ min: 5 }),
@@ -27,8 +81,98 @@ router.post('/register', [
         res.json(Usuario);
     });
 
+/**
+ * @swagger
+ * /api/change-password:
+ *   post:
+ *     summary: Cambiar la contraseña de un usuario
+ *     tags: [Usuario]
+ *     description: Cambiar la contraseña de un usuario existente mediante su correo electrónico.
+ *     parameters:
+ *       - name: email
+ *         in: formData
+ *         description: Correo electrónico del usuario.
+ *         required: true
+ *         type: string
+ *       - name: password
+ *         in: formData
+ *         description: Nueva contraseña del usuario (mínimo 5 caracteres).
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Contraseña cambiada correctamente.
+ *       404:
+ *         description: Usuario no encontrado.
+ *       422:
+ *         description: Error de validación. Devuelve una lista de errores de validación.
+ *       500:
+ *         description: Error en el servidor.
+ */
+router.post('/change-password', [
+    check('email', 'Debe ser un email correcto').isEmail(),
+    check('password', 'Minimo 5 caracteres').isLength({ min: 5 }),
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body;
+
+    try {
+        // Verificar si el usuario existe en la base de datos
+        const usuario = await Usuario.findOne({ email });
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Generar el hash de la nueva contraseña
+        const newPasswordHash = bcrypt.hashSync(password, 10);
+
+        // Actualizar la contraseña del usuario en la base de datos
+        usuario.password = newPasswordHash;
+        await usuario.save();
+
+        res.json({ message: 'Contraseña actualizada correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error en el servidor' });
+    }
+});
 
 
+
+
+/**
+ * Inicia sesión de un usuario.
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Iniciar sesión de usuario.
+ *     tags: [Usuario]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Correo electrónico del usuario.
+ *               password:
+ *                 type: string
+ *                 description: Contraseña del usuario.
+ *     responses:
+ *       200:
+ *         description: Token de autenticación si las credenciales son válidas.
+ *       401:
+ *         description: Credenciales incorrectas.
+ *       404:
+ *         description: Usuario no encontrado.
+ */
 
 router.post('/login', async (req, res) => {
     const existeUsuario = await Usuario.findOne({ where: { email: req.body.email } });
