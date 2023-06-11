@@ -194,6 +194,54 @@ router.post('/login', async (req, res) => {
 });
 
 
+/**
+ * @swagger
+ * /api/loginEterno:
+ *   post:
+ *     summary: Iniciar sesión con token eterno
+ *     tags: [Usuario]
+ *     description: Iniciar sesión de un usuario existente mediante su correo electrónico y contraseña. Genera un token JWT sin fecha de caducidad.
+ *     parameters:
+ *       - name: email
+ *         in: formData
+ *         description: Correo electrónico del usuario.
+ *         required: true
+ *         type: string
+ *       - name: password
+ *         in: formData
+ *         description: Contraseña del usuario.
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Inicio de sesión exitoso. Devuelve el token JWT sin fecha de caducidad.
+ *       401:
+ *         description: Credenciales incorrectas. El correo electrónico o la contraseña son incorrectos.
+ *       404:
+ *         description: Usuario no encontrado. No existe un usuario con el correo electrónico proporcionado.
+ *       500:
+ *         description: Error en el servidor.
+ */
+router.post('/loginEterno', async (req, res) => {
+    const existeUsuario = await Usuario.findOne({ where: { email: req.body.email } });
+
+    if (existeUsuario) {
+
+        const validPassword = bcrypt.compareSync(req.body.password, existeUsuario.password);
+        console.log(validPassword);
+        if (validPassword) {
+            res.json({ success: true, token: generateTokenEterno(Usuario) });
+
+
+        } else {
+            res.status(401).json({ error: 'Credenciales incorrectas' });
+        }
+    } else {
+        res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+});
+
+
 const createToken = (Usuario) => {
     const payload = {
         usuarioid: Usuario.id,
@@ -204,6 +252,23 @@ const createToken = (Usuario) => {
     return jwt.encode(payload, 'Frase Secreta');
 
 };
+
+
+
+
+const generateTokenEterno = (usuarioId) => {
+    const payload = {
+        usuarioId: usuarioId
+    };
+
+    const token = jwt.sign(payload, 'Frase Secreta');
+
+    return token;
+};
+
+module.exports = { generateTokenEterno };
+
+
 
 module.exports = router;
 
