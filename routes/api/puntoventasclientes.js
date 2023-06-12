@@ -6,7 +6,7 @@ const { check, validationResult } = require('express-validator');
 const { PuntoVentasCliente } = require('../../db.js');
 const { PuntoVentasClientePago } = require('../../db.js');
 
-const Usuarios = require('../../models/Usuarios.js');
+//const Usuarios = require('../../models/Usuarios.js');
 const jwt = require('jwt-simple');
 
 
@@ -331,7 +331,12 @@ router.post('/consultarPago', [
 
 
 
+router.get('/listarclientes', async (req, res) => {
+    const clientes = await PuntoVentasCliente.findAll();
+    res.json(clientes);
 
+
+});
 
 
 
