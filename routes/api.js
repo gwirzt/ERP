@@ -1,18 +1,29 @@
 const router = require('express').Router();
 const middlewares = require('./middlewares');
 
+
+apiProvinciasRouter = require('./api/provincias');
+apiLocalidadesRouter = require('./api/localidades');
+
+
 const apiEmpresasRouter = require('./api/empresas');
-const usuarioouter = require('./api/usuarios');
+
+
+const usuariorouter = require('./api/usuarios');
 const apiPuntoVentasClientesRouter = require('./api/puntoventasclientes');
 
 
 
 
 
+router.use('/provincia', middlewares.checkToken, apiProvinciasRouter);
+router.use('/localidad', middlewares.checkToken, apiLocalidadesRouter);
 
-router.use('/empresas', middlewares.checkToken, apiEmpresasRouter);
-router.use('/usuarios', usuarioouter)
-router.use('/puntoventasclientes', apiPuntoVentasClientesRouter);
+
+router.use('/empresa', middlewares.checkToken, apiEmpresasRouter);
+router.use('/usuario', usuariorouter)
+router.use('/puntoventascliente', apiPuntoVentasClientesRouter);
+
 
 
 module.exports = router;

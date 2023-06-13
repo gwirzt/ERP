@@ -16,7 +16,7 @@ const jwt = require('jwt-simple');
 
 /**
  * @swagger
- * /api/puntoventasclientes/alta:
+ * /api/puntoventascliente/alta:
  *   post:
  *     summary: Dar de alta un nuevo cliente del punto de venta
  *     tags:
@@ -104,7 +104,7 @@ router.post('/alta', [
 
 /**
  * @swagger
- * /api/puntoventasclientes/pagoperiodo:
+ * /api/puntoventascliente/pagoperiodo:
  *   post:
  *     summary: Crear un nuevo pago de periodo
  *     tags:
@@ -241,7 +241,7 @@ router.post('/pagoperiodo', [
 
 /**
  * @swagger
- * /api/puntoventasclientes/consultarPago:
+ * /api/puntoventascliente/consultarPago:
  *   post:
  *     summary: Consultar pagos de un cliente
  *     tags: 
@@ -332,7 +332,9 @@ router.post('/consultarPago', [
 
 
 router.get('/listarclientes', async (req, res) => {
-    const clientes = await PuntoVentasCliente.findAll();
+    const clientes = await PuntoVentasCliente.findAll(
+        include = [{ model: PuntoVentasClientePago, as: 'pagos', attri }]
+    );
     res.json(clientes);
 
 

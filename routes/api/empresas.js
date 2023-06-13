@@ -1,147 +1,89 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
+const { check, validationResult } = require('express-validator');
 
 const { Empresa } = require('../../db');
-
-
-
-
 /**
  * @swagger
- * components:
- *  schemas:
- *     Empresa:
- *      type: object
- *      properties:
- *          id:
- *              type: integer       
- *              readOnly: true
- *          nombre:
- *              type: string
- *          direccion:
- *              type: string
- *          telefono:
- *              type: string
- *          email:
- *              type: string
- *          cuit:
- *              type: integer
- *      required:
- *          - nombre
- *          - direccion
- *          - telefono
- *          - email
- *          - cuit
- * 
+ * /api/empresa/alta:
+ *   post:
+ *     summary: Alta de empresa
+ *     description: Crea una nueva empresa.
+ *     tags:
+ *       - Empresa
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *               direccion:
+ *                 type: string
+ *               telefono:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               cuit:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Empresa creada exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Empresa'
+ *       '400':
+ *         description: Ya existe una empresa con ese CUIT.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       '422':
+ *         description: Parámetros inválidos.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       value:
+ *                         type: string
+ *                       msg:
+ *                         type: string
+ *                       param:
+ *                         type: string
+ *                       location:
+ *                         type: string
+ *
  */
-
-
-
-/**
- * @swagger
- * /api/empresas:
- *  post:
- *    summary: Crea una empresa.
- *    tags: [Empresa]
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            $ref: '#/components/schemas/Empresa'
- *    responses:
- *      200:
- *        description: Empresa creada correctamente.
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/Empresa'
- *      400:
- *        description: Ya existe una empresa con ese CUIT.
- *      500:
- *        description: Error interno del servidor.
- *  security:
- *     - bearerAuth: []
- *      
- */
-router.post('/', async (req, res) => {
-    const existeEmpresa = await Empresa.findOne({ where: { cuit: req.body.cuit } });
-
-    if (existeEmpresa) {
-        return res.status(400).json({ error: 'Ya existe una empresa con ese CUIT' });
-    } else {
-        const empresa = await Empresa.create(req.body);
-        res.json(empresa);
+router.post('/alta', [
+    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    check('direccion', 'La direccion es obligatoria').not().isEmpty(),
+    check('telefono', 'El telefono es obligatorio').not().isEmpty(),
+    check('email', 'El email es obligatorio').not().isEmpty(),
+    check('cuit', 'El cuit es obligatorio').not().isEmpty(),]
+    , async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).send({ errors: errors.array() })
+        }
+        const empresa = await Empresa.findOne({ where: { cuit: req.body.cuit } });
+        if (empresa) {
+            return res.status(400).send({ message: 'Ya existe una empresa con ese CUIT' });
+        }
+        const newEmpresa = await Empresa.create(req.body);
+        res.json(newEmpresa);
     }
-});
-/**
- * @swagger
- * /api/empresas/{id}:
- *  put:
- *      summary: Actualiza una empresa existente
- *      tags: [Empresa]
- *      security:
- *          - bearerAuth: []
- *      parameters:
- *          - in: path
- *            name: id
- *            schema:
- *              type: integer
- *            required: true
- *            description: ID de la empresa a actualizar
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/components/schemas/Empresa'
- *      responses:
- *          200:
- *              description: OK
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/Empresa'
- */
-
-router.put('/:empresaId', async (req, res) => {
-    await Empresa.update(req.body, {
-        where: { id: req.params.empresaId }
-    });
-    res.json({ success: 'Se ha modificado la empresa' });
-});
-
-
-
-/**
- * @swagger
- * /api/empresas:
- *  get:
- *      summary: Retorna todas las empresas
- *      tags: [Empresa]
- *      security:
- *          - bearerAuth: []
- *      parameters:
- *        - in: header
- *          name: user-token
- *          type: string
- *          required: true
- *          description: El token de autenticación recibido al iniciar sesión.
- *      responses:
- *          200:
- *              description: OK
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: array
- *                          items:
- *                              $ref: '#/components/schemas/Empresa'
- */
-router.get('/', async (req, res) => {
-    const empresas = await Empresa.findAll();
-    res.json(empresas);
-});
+);
 
 module.exports = router;
-
-
-
