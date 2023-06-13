@@ -13,10 +13,14 @@ require('./db')
 const app = express();
 
 
-
+const cors = require('cors');
+const corsOptions = { origin: process.env.CORS_ORIGIN, credentiales: true, };
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors(corsOptions));
 
 app.use('/api', apiRouter)
 
