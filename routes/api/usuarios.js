@@ -32,7 +32,7 @@ const jwt = require('jwt-simple');
 
 /**
  * @swagger
- * /api/register:
+ * /api/usuario/register:
  *   post:
  *     summary: Registrar un nuevo usuario
  *     tags: [Usuario]
@@ -83,7 +83,7 @@ router.post('/register', [
 
 /**
  * @swagger
- * /api/change-password:
+ * /api/usuario/change-password:
  *   post:
  *     summary: Cambiar la contraseña de un usuario
  *     tags: [Usuario]
@@ -148,7 +148,7 @@ router.post('/change-password', [
 /**
  * Inicia sesión de un usuario.
  * @swagger
- * /login:
+ * /api/usuario/login:
  *   post:
  *     summary: Iniciar sesión de usuario.
  *     tags: [Usuario]
@@ -196,7 +196,7 @@ router.post('/login', async (req, res) => {
 
 /**
  * @swagger
- * /api/loginEterno:
+ * /api/usuario/loginEterno:
  *   post:
  *     summary: Iniciar sesión con token eterno
  *     tags: [Usuario]
