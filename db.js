@@ -9,15 +9,15 @@ const EmpresaMoldel = require('./models/Empresas');
 const UnidadNegocioModel = require('./models/UnidadesNegocios');
 const LocalidadModel = require('./models/Localidades');
 const ProvinciaModel = require('./models/Provincias');
-const CentroCostosModel = require('./models/CentrosCostos');
-const EmpresaCentroCostoMOdel = require('./models/EmpresasCentrosCostos');
-const UnidadNegocioCentroCostoModel = require('./models/UnidadesNegociosCentrosCostos');
+
 // Menu
 
 const MenuModel = require('./models/menu/Menu');
 const ItemModel = require('./models/menu/Item');
 const SubitemModel = require('./models/menu/Subitem');
+
 const AccesosModel = require('./models/menu/Accesos');
+
 
 
 //Compra Venta
@@ -52,9 +52,6 @@ const Empresa = EmpresaMoldel(sequelize, Sequelize);
 const UnidadNegocio = UnidadNegocioModel(sequelize, Sequelize);
 const Localidad = LocalidadModel(sequelize, Sequelize);
 const Provincia = ProvinciaModel(sequelize, Sequelize);
-const CentroCosto = CentroCostosModel(sequelize, Sequelize);
-const EmpresaCentroCosto = EmpresaCentroCostoMOdel(sequelize, Sequelize);
-const UnidadNegocioCentroCosto = UnidadNegocioCentroCostoModel(sequelize, Sequelize);
 
 
 const Menu = MenuModel(sequelize, Sequelize);
@@ -88,8 +85,8 @@ sequelize.sync({ force: false })
 
 module.exports = {
     Usuario,
-    Empresa, UnidadNegocio, Localidad, Provincia, CentroCosto, EmpresaCentroCosto, Menu, Item, Subitem, Accesos,
-    UnidadNegocioCentroCosto, Cliente, Provedor, CondicionPago, CondicionIva, Choferes,
+    Empresa, UnidadNegocio, Localidad, Provincia, Menu, Item, Subitem, Accesos,
+    Cliente, Provedor, CondicionPago, CondicionIva, Choferes,
     TiposVehiculos, Vehiculos, Equipos, ComprobantesCompras, TipoComprobantes, PuntoVentasCliente, PuntoVentasClientePago
 }
 

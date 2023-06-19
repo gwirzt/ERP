@@ -1,11 +1,11 @@
 module.exports = (sequelize, type) => {
-    return sequelize.define('Subitem', {
+    return sequelize.define('Subitems', {
         id: { type: type.INTEGER, primaryKey: true, autoIncrement: true },
-        detalle: type.STRING,
-        direccion: type.STRING,
-        references: { model: 'Item', key: 'id' }
-    }
+        id_item: { type: type.INTEGER, allowNull: false },
+        nombre: type.STRING,
+        accion: type.STRING,
 
-    );
+
+    });
 
 };

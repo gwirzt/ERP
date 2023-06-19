@@ -1,11 +1,11 @@
 
 module.exports = (sequelize, type) => {
-    return sequelize.define('Item', {
-        id: { type: type.INTEGER, primaryKey: true, autoIncrement: true },
-        detalle: type.STRING,
-        direccion: type.STRING,
-        references: { model: 'Menu', key: 'id' }
-    }
-    );
+    return sequelize.define('Items', {
+        id: { type: type.INTEGER, primaryKey: true, autoIncrement: true, },
+        id_menu: type.INTEGER,
+        nombre: type.STRING,
+        accion: type.STRING,
+
+    });
 };
 

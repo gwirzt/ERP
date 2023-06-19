@@ -2,6 +2,9 @@ const router = require('express').Router();
 const middlewares = require('./middlewares');
 
 
+apiMenusRouter = require('./api/menus');
+
+
 apiProvinciasRouter = require('./api/provincias');
 apiLocalidadesRouter = require('./api/localidades');
 
@@ -14,7 +17,7 @@ const apiPuntoVentasClientesRouter = require('./api/puntoventasclientes');
 
 
 
-
+router.use('/menu', middlewares.checkToken, apiMenusRouter);
 
 router.use('/provincia', middlewares.checkToken, apiProvinciasRouter);
 router.use('/localidad', middlewares.checkToken, apiLocalidadesRouter);

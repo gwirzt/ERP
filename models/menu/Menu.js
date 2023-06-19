@@ -1,13 +1,13 @@
 module.exports = (sequelize, type) => {
-    return sequelize.define('Menu', {
+    return sequelize.define('Menus', {
         id: {
             type: type.INTEGER,
             primaryKey: true,
             autoIncrement: true,
 
         },
-        detalle: type.STRING,
-        direccion: type.STRING,
+        nombre: type.STRING,
+
     });
 };
 
