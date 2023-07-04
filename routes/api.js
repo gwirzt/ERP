@@ -3,6 +3,7 @@ const middlewares = require('./middlewares');
 
 
 apiMenusRouter = require('./api/menus');
+apiItemsRouter = require('./api/items');
 
 
 apiProvinciasRouter = require('./api/provincias');
@@ -18,6 +19,7 @@ const apiPuntoVentasClientesRouter = require('./api/puntoventasclientes');
 
 
 router.use('/menu', middlewares.checkToken, apiMenusRouter);
+router.use('/item', middlewares.checkToken, apiItemsRouter);
 
 router.use('/provincia', middlewares.checkToken, apiProvinciasRouter);
 router.use('/localidad', middlewares.checkToken, apiLocalidadesRouter);

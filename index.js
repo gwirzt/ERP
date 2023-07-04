@@ -6,6 +6,7 @@ require('dotenv').config();
 const { swaggerDocs: swagger1 } = require('./swagger');
 
 
+
 const apiRouter = require('./routes/api');
 
 require('./db')
@@ -23,6 +24,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
 app.use('/api', apiRouter)
+
+
+
+
 
 
 app.listen(process.env.PORT, () => {

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
-const { Usuario } = require('../../db.js');
+const { Usuario, Menu, Item, Accesos } = require('../../db.js');
 const { check, validationResult } = require('express-validator');
 const moment = require('moment');
 const jwt = require('jwt-simple');
@@ -77,8 +77,8 @@ router.post('/register', [
 
         req.body.password = bcrypt.hashSync(req.body.password, 10);
 
-        const Usuario = await Usuario.create(req.body);
-        res.json(Usuario);
+        const nuevoUsuario = await Usuario.create(req.body);
+        res.json(nuevoUsuario);
     });
 
 /**
@@ -182,7 +182,8 @@ router.post('/login', async (req, res) => {
         const validPassword = bcrypt.compareSync(req.body.password, existeUsuario.password);
         console.log(validPassword);
         if (validPassword) {
-            res.json({ success: true, token: createToken(Usuario) });
+
+            res.json({ success: true, token: createToken(existeUsuario.id) });
 
 
         } else {
@@ -242,17 +243,23 @@ router.post('/loginEterno', async (req, res) => {
 });
 
 
-const createToken = (Usuario) => {
-    const payload = {
-        usuarioid: Usuario.id,
-        createdAt: moment().unix(),
-        expiredAt: moment().add(15, 'minutes').unix()
-    };
+const createToken = (nUsuario) => {
+    // al crear el token, le pasamos un payload, que es un objeto con los datos que queremos que lleve el token
+    // el menu y los items por ejemplo 
 
-    return jwt.encode(payload, 'Dime con quien andas y te dire quien eres');
+    const payload = {
+        usuarioid: nUsuario,
+        createdAt: moment().unix(),
+        expiredAt: moment().add(24, 'hours').unix(),
+        // menu: obtenerMenu(nUsuario)
+    };
+    // la frase de seguridad viene del .ENV
+    const token = jwt.encode(payload, process.env.FRASE_LOCA);
+
+
+    return token
 
 };
-
 
 
 

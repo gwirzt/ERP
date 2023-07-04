@@ -58,5 +58,9 @@ router.post('/enviosql', [check('consulta').isString().notEmpty()], async (req, 
 });
 
 
+
+
+
+
 module.exports = router;
 
