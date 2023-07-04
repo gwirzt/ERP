@@ -23,6 +23,11 @@ const Provincia = ProvinciaModel(sequelize, Sequelize);
 // Empleados
 const EmpleadoModel = require('./models/Empleados/Empleado');
 const Empleado = EmpleadoModel(sequelize, Sequelize);
+const EmpresaArtModel = require('./models/Empleados/EmpresaArt');
+const EmpresaArt = EmpresaArtModel(sequelize, Sequelize);
+const EmpresaMedicinaLaboralModel = require('./models/Empleados/EmpresaMedicinalaboral');
+const EmpresaMedicinaLaboral = EmpresaMedicinaLaboralModel(sequelize, Sequelize);
+
 
 
 // Menu

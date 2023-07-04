@@ -7,8 +7,10 @@ const ItemModel = require('./menu/Item');
 const AccesosModel = require('./menu/Acceso');
 const UsuarioModel = require('./Usuarios');
 
+
 const EmpresamedicinaLaboralModel = require('./Empleados/EmpresaMedicinalaboral');
 const EmpleadosModel = require('./Empleados/Empleado');
+const EmpresaArtModel = require('./Empleados/EmpresaArt');
 
 const Menu = MenuModel(sequelize, Sequelize);
 const Item = ItemModel(sequelize, Sequelize);
@@ -17,6 +19,8 @@ const Usuario = UsuarioModel(sequelize, Sequelize);
 
 const EmpresamedicinaLaboral = EmpresamedicinaLaboralModel(sequelize, Sequelize);
 const Empleados = EmpleadosModel(sequelize, Sequelize);
+const EmpresaArt = EmpresaArtModel(sequelize, Sequelize);
+
 
 
 Menu.hasMany(Item, { foreignKey: 'id_menu' });
@@ -27,4 +31,8 @@ Accesos.belongsTo(Usuario, { foreignKey: 'id_usuario' });
 
 Menu.hasMany(Accesos, { foreignKey: 'id_menu' });
 Accesos.belongsTo(Menu, { foreignKey: 'id_menu' });
+
+EmpresaArt.hasMany(Empleados, { foreignKey: 'art_id' });
+Empleados.belongsTo(EmpresaArt, { foreignKey: 'art_id' });
+
 

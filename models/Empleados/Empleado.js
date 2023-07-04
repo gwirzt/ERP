@@ -19,6 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         talle_calzado: DataTypes.STRING,
         preocupacional_fecha: DataTypes.DATE,
         preocupacional_id: DataTypes.INTEGER,
+        art_id: DataTypes.INTEGER,
+        art_alta: DataTypes.DATE,
     }, {
         tableName: 'Empleados',
         timestamps: false,
