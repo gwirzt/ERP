@@ -9,9 +9,9 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: 'mysql'
 });
 
-const MenuModel = require('./models/menu/Menu');
-const ItemModel = require('./models/menu/Item');
-const AccesosModel = require('./models/menu/Acceso');
+const MenuModel = require('../models/menu/Menu');
+const ItemModel = require('../models/menu/Item');
+const AccesosModel = require('../models/menu/Acceso');
 const Menu = MenuModel(sequelize, Sequelize);
 const Item = ItemModel(sequelize, Sequelize);
 const Accesos = AccesosModel(sequelize, Sequelize);
@@ -124,9 +124,9 @@ const llenarTablas = async () => {
 };
 
 
-syncTablesForceTrue();
+// syncTablesForceTrue();
 
-llenarTablas();
+// llenarTablas();
 
-// run();
+run();
 

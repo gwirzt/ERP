@@ -1,13 +1,13 @@
 const swaggerjsdoc = require('swagger-jsdoc');
 const swaggerui = require('swagger-ui-express');
-
+require('dotenv').config();
 // meta data info 
 const swaggerOptions = {
     definition: {
         openapi: '3.0.0',
         info: { title: "ERP API", version: "1.0.0", description: "API de acceso al ERP" },
         servers: [
-            { url: "http://localhost:3000" }
+            { url: `http://localhost:${process.env.PORT}` }
         ],
         securitySchemes: {
             bearerAuth: {

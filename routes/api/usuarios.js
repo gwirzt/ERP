@@ -227,13 +227,10 @@ router.post('/loginEterno', async (req, res) => {
     const existeUsuario = await Usuario.findOne({ where: { email: req.body.email } });
 
     if (existeUsuario) {
-
         const validPassword = bcrypt.compareSync(req.body.password, existeUsuario.password);
         console.log(validPassword);
         if (validPassword) {
             res.json({ success: true, token: generateTokenEterno(Usuario) });
-
-
         } else {
             res.status(401).json({ error: 'Credenciales incorrectas' });
         }
@@ -241,6 +238,7 @@ router.post('/loginEterno', async (req, res) => {
         res.status(404).json({ error: 'Usuario no encontrado' });
     }
 });
+
 
 
 const createToken = (nUsuario) => {
@@ -260,12 +258,6 @@ const createToken = (nUsuario) => {
     return token
 
 };
-
-
-
-
-
-
 
 module.exports = router;
 

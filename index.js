@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
-
 const { swaggerDocs: swagger1 } = require('./swagger');
 
 
@@ -31,7 +30,7 @@ app.use('/api', apiRouter)
 
 
 app.listen(process.env.PORT, () => {
-    console.log('Server is running on port 3000');
+    console.log('Server is running on port 3010');
     swagger1(app, process.env.PORT);
 });
 

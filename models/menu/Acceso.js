@@ -1,4 +1,5 @@
 // creamo el modelo de Accesos
+
 module.exports = (sequelize, DataTypes) => {
     const Accesos = sequelize.define('Accesos', {
         id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, },

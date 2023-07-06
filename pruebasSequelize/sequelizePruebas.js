@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 
-const { Provincia, Localidad, Sequelize } = require('../../db');
+const { Provincia, Localidad, Sequelize } = require('../db');
 const { QueryTypes } = require('sequelize');
 const { Op } = require('sequelize');
 
