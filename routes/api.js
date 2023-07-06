@@ -29,7 +29,7 @@ router.use('/empresa', middlewares.checkToken, apiEmpresasRouter);
 router.use('/usuario', usuariorouter)
 router.use('/puntoventascliente', apiPuntoVentasClientesRouter);
 
-router.use('/sequelizepruebas', require('./api/sequelizePruebas'));
+
 
 module.exports = router;
 

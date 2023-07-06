@@ -182,8 +182,8 @@ router.post('/login', async (req, res) => {
         const validPassword = bcrypt.compareSync(req.body.password, existeUsuario.password);
         console.log(validPassword);
         if (validPassword) {
-
-            res.json({ success: true, token: createToken(existeUsuario.id) });
+            const misMenu = await creaMenu(existeUsuario.id);
+            res.json({ success: true, token: createToken(existeUsuario.id, misMenu) });
 
 
         } else {
@@ -241,15 +241,17 @@ router.post('/loginEterno', async (req, res) => {
 
 
 
-const createToken = (nUsuario) => {
+const createToken = (nUsuario, menues) => {
     // al crear el token, le pasamos un payload, que es un objeto con los datos que queremos que lleve el token
     // el menu y los items por ejemplo 
-
+    console.log(menues);
+    // console.log(JSON.stringify(menues, null, 2));
     const payload = {
         usuarioid: nUsuario,
+        menu: menues,
         createdAt: moment().unix(),
         expiredAt: moment().add(24, 'hours').unix(),
-        // menu: obtenerMenu(nUsuario)
+
     };
     // la frase de seguridad viene del .ENV
     const token = jwt.encode(payload, process.env.FRASE_LOCA);
@@ -258,6 +260,40 @@ const createToken = (nUsuario) => {
     return token
 
 };
+
+
+
+const creaMenu = async (idUsuario) => {
+    const result = await Accesos.findAll({
+        where: { id_usuario: idUsuario },
+        attributes: ['id'],
+        include: [
+            {
+                model: Menu,
+                as: 'Menu',
+                attributes: ['nombre'],
+                include: {
+                    model: Item,
+                    as: 'Items',
+                    attributes: ['nombre', 'accion'],
+                }
+            }
+        ]
+    });
+
+    const mappedResult = result.map(acceso => ({
+        id: acceso.id,
+        menu: acceso.Menu.nombre,
+        items: acceso.Menu.Items.map(item => item)
+    }));
+
+
+    return JSON.stringify(mappedResult, null, 2);
+}
+
+
+
+
 
 module.exports = router;
 

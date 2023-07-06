@@ -49,8 +49,40 @@ const buscaAccesos = async (idUsuario) => {
     }
 }
 
-Menus();
-buscaAccesos(1);
+
+const creaMenu = async (idUsuario) => {
+    try {
+        const result = await Accesos.findAll({
+            where: { id_usuario: idUsuario },
+            attributes: ['id'],
+            include: [
+                {
+                    model: Menu,
+                    as: 'Menu',
+                    attributes: ['nombre'],
+                    include: {
+                        model: Item,
+                        as: 'Items',
+                        attributes: ['nombre', 'accion'],
+                    }
+                }
+            ]
+        });
+
+        const mappedResult = result.map(acceso => ({
+            id: acceso.id,
+            menu: acceso.Menu.nombre,
+            items: acceso.Menu.Items.map(item => item)
+        }));
+
+        return JSON.stringify(mappedResult, null, 2);
+    } catch (error) {
+        console.error('Error al consultar los datos:', error);
+    }
+}
+
+// Menus();
+buscoAcceso2(1);
 
 
 
